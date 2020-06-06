@@ -1,7 +1,9 @@
 const SHA256 = require("crypto-js/sha256");
 const EC = require("elliptic").ec;
 const ec = new EC("secp256k1");
-var Block  = require("./blockModel");
+
+const Block  = require("./blockModel");
+const Transaction = require("./transactionModel");
 
 class BlockChain {
   constructor() {
@@ -21,7 +23,7 @@ class BlockChain {
 
   minePendingTransactions(miningRewardAddress) {
     const reward = new Transaction(
-      null,
+      "Admin",
       miningRewardAddress,
       this.miningReward
     );
@@ -32,16 +34,19 @@ class BlockChain {
       this.pendingTransactions,
       this.getLatestBlock().hash
     );
+    this.pendingTransactions = [];
     block.mineBlock(this.difficulty);
     console.log("Block successfully mined!");
     this.blockChain.push(block);
-    this.pendingTransactions = [];
   }
 
   addTransaction(transaction) {
+    console.log("1");
+
     if (!transaction.sender || !transaction.recipient) {
       throw new Error("Transaction must contain sender and recipient.");
     }
+    console.log("2");
 
     if (!transaction.isValid()) {
       throw new Error("Transaction invalid.");
@@ -115,4 +120,4 @@ class BlockChain {
   }
 }
 
-module.exports.BlockChain = BlockChain;
+module.exports = BlockChain;

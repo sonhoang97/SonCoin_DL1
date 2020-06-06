@@ -1,6 +1,7 @@
 const SHA256 = require("crypto-js/sha256");
 const EC = require("elliptic").ec;
 const ec = new EC("secp256k1");
+const Transaction = require("./transactionModel");
 
 class Block {
   constructor(timestamp, transactions, previousHash = "") {
@@ -40,4 +41,4 @@ class Block {
     return true;
   }
 }
-module.exports.Block = Block;
+module.exports= Block;
