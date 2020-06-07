@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService } from '../services/config.service';
 import { BlockChain } from '../model/block-chain';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/typeahead-match.class';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +23,7 @@ export class AppComponent implements OnInit {
   balanceUser = 0;
   lsUser: string[] = ['Son'];
   isEnough = true;
-  notFunds= false;
+  notFunds = false;
   constructor(private configService: ConfigService) {}
   ngOnInit() {
     this.configService.getBlockChain().subscribe((res: any) => {
@@ -93,9 +92,11 @@ export class AppComponent implements OnInit {
     if (this.noResultTA && !this.isEnough) {
       return;
     }
-    if(this.amountTrans + this.funds > this.balanceUser){
+    if (this.amountTrans + this.funds > this.balanceUser) {
       this.notFunds = true;
       return;
+    } else {
+      this.notFunds = false;
     }
     this.configService
       .addTransaction(

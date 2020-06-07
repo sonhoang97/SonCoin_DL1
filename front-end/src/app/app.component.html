@@ -21,13 +21,40 @@
           {{ user }}
         </button>
       </div>
+      <div class="row">
+        <div class="history">
+          <h3 style="text-align: center;">
+            History
+          </h3>
+          <table style="width: 100%; text-align: center;">
+            <tr>
+              <th>From</th>
+              <th>To</th>
+              <th>Amount</th>
+            </tr>
+            <ng-container *ngFor="let item of blockChain.blockChain">
+              <ng-container *ngFor="let tran of item.transactions">
+                <tr
+                  *ngIf="
+                    tran.sender === selectUser || tran.recipient === selectUser
+                  "
+                >
+                  <td>{{ tran.sender }}</td>
+                  <td>{{ tran.recipient }}</td>
+                  <td>{{ tran.amount }}</td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </table>
+        </div>
+      </div>
     </div>
     <div class="block-chain col-6 m-2">
       <div class="profile m-2 ml-auto mr-auto">
         <h1 class="m-2">{{ selectUser }}</h1>
         <h1 class="m-2">{{ balanceUser }}</h1>
-        <button class="btn m-2" (click)="miningBlock()">
-          Mining Block
+        <button class="btn m-2 btn-info" (click)="miningBlock()">
+          Mine New Block
         </button>
       </div>
       <hr />
@@ -42,7 +69,9 @@
             <div class="col-auto hash ml-auto">{{ item.hash }}</div>
           </div>
           <div class="row">
-            <div class="m-2" style="font-size: 20px; font-style: oblique;">{{ item.transactions }}</div>
+            <div class="m-2" style="font-size: 20px; font-style: oblique;">
+              First Block
+            </div>
             <div class="col-auto m-2 ml-auto date">
               {{ item.timeStamp | date: "yyyy-MM-dd h:mm:ss a" }}
             </div>
@@ -73,7 +102,9 @@
             <div class="col-auto hash ml-auto">{{ item.hash }}</div>
           </div>
           <div class="row my-2">
-            <span style="font-size: 20px; font-style: oblique;">Block: {{ i }}</span>
+            <span style="font-size: 20px; font-style: oblique;"
+              >Block: {{ i }}</span
+            >
             <div class="col-auto m-2 ml-auto date">
               {{ item.timeStamp | date: "yyyy-MM-dd h:mm:ss a" }}
             </div>
@@ -110,7 +141,11 @@
           <label *ngIf="noResultTA">Dont have Receiver</label>
         </div>
         <div style="text-align: center;">
-          <button class="btn btn-success m-2 w-25" (click)="addTransaction()">
+          <button
+            class="btn m-2 w-25 btn-info"
+        
+            (click)="addTransaction()"
+          >
             PAY
           </button>
           <label *ngIf="notFunds">Insufficient funds!</label>
@@ -130,7 +165,7 @@
             <td>{{ tran.amount }}</td>
           </tr>
         </table>
-        <h4>Funds: {{funds}}</h4>
+        <h4>Funds: {{ funds }}</h4>
       </div>
     </div>
   </div>

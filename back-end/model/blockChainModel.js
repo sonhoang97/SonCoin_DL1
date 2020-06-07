@@ -19,7 +19,7 @@ class BlockChain {
   }
 
   createGenesisBlock() {
-    this.blockChain.push(new Block(Date.now(), "Initial Block", ""));
+    this.blockChain.push(new Block(Date.now(), [], ""));
   }
 
   getLatestBlock() {
