@@ -7,14 +7,19 @@ const Transaction = require("./transactionModel");
 
 class BlockChain {
   constructor() {
-    this.blockChain = [this.createGenesisBlock()];
+    this.blockChain = [];
     this.difficulty = 4;
     this.pendingTransactions = [];
     this.miningReward = 100;
   }
 
+  setBlockChain(blockChain, pendingTransactions){
+    this.blockChain = blockChain;
+    this.pendingTransactions = pendingTransactions;
+  }
+
   createGenesisBlock() {
-    return new Block(Date.now(), "Initial Block", "");
+    this.blockChain.push(new Block(Date.now(), "Initial Block", ""));
   }
 
   getLatestBlock() {
@@ -41,17 +46,14 @@ class BlockChain {
   }
 
   addTransaction(transaction) {
-    console.log("1");
 
     if (!transaction.sender || !transaction.recipient) {
       throw new Error("Transaction must contain sender and recipient.");
     }
-    console.log("2");
 
-    if (!transaction.isValid()) {
-      throw new Error("Transaction invalid.");
-    }
-
+    // if (!transaction.isValid()) {
+    //   throw new Error("Transaction invalid.");
+    // }
     if (this.getBalanceOfAddress(transaction.sender) < transaction.amount) {
       throw new Error("Not enough coins");
     }

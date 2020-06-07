@@ -1,1 +1,139 @@
-<p>Hello {{title}}</p>
+<div class="container-fluild">
+  <div class="row m-auto">
+    <div class="col-2 m-5">
+      <label>Create user: </label>
+      <div class="row">
+        <input
+          class="col-6 form-control"
+          name="userName"
+          [(ngModel)]="userName"
+        />
+        <button
+          type="button"
+          class="btn btn-secondary col-4 mx-auto"
+          (click)="createUser()"
+        >
+          Create
+        </button>
+      </div>
+      <div *ngFor="let user of lsUser">
+        <button class="btn btn-success" (click)="selectUserButton(user)">
+          {{ user }}
+        </button>
+      </div>
+    </div>
+    <div class="block-chain col-6 m-2">
+      <div class="profile m-2 ml-auto mr-auto">
+        <h1 class="m-2">{{ selectUser }}</h1>
+        <h1 class="m-2">{{ balanceUser }}</h1>
+        <button class="btn btn-secondary m-2" (click)="miningBlock()">
+          mining Block
+        </button>
+      </div>
+      <hr />
+      <h1 style="text-align: center;">BlockChain</h1>
+      <div
+        *ngFor="let item of blockChain.blockChain; index as i"
+        class="item-blk"
+      >
+        <div *ngIf="i == 0">
+          <div class="row">
+            <span>Hash</span>
+            <div class="col-auto">{{ item.hash }}</div>
+          </div>
+          <div class="row">
+            <div>{{ item.transactions }}</div>
+            <span>Time</span>
+            <div class="col-auto">
+              {{ item.timeStamp | date: "yyyy-MM-dd h:mm:ss a" }}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="i != 0">
+          <div class="row">
+            <table style="width: 100%;">
+              <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Amount</th>
+              </tr>
+              <tr *ngFor="let tran of item.transactions">
+                <td>{{ tran.sender }}</td>
+                <td>{{ tran.recipient }}</td>
+                <td>{{ tran.amount }}</td>
+              </tr>
+            </table>
+          </div>
+          <hr />
+          <div class="row">
+            <span>Previous Hash</span>
+            <div class="col-auto">{{ item.previousHash }}</div>
+          </div>
+          <div class="row">
+            <span>Hash</span>
+            <div class="col-auto">{{ item.hash }}</div>
+          </div>
+          <div class="row">
+            <span>Block: {{ i }}</span>
+            <span>Time</span>
+            <div class="col-auto">
+              {{ item.timeStamp | date: "yyyy-MM-dd h:mm:ss a" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col mx-3 my-5">
+      <div class="transaction">
+        <div class="row m-2">
+          <span class="col-4">Sender:</span>
+          <input [value]="selectUser" disabled class="form-control col-8" />
+        </div>
+        <div class="row m-2">
+          <span class="col-4">Amount:</span>
+          <input
+            type="number"
+            [(ngModel)]="amountTrans"
+            (blur)="checkRest()"
+            class="form-control col-8"
+          />
+        </div>
+        <label *ngIf="!isEnough">Not enough money!</label>
+        <div class="row m-2">
+          <span class="col-4">Sender:</span>
+          <input
+            [(ngModel)]="receiveTA"
+            [typeahead]="lsUser"
+            (typeaheadNoResults)="typeaheadNoResults($event)"
+            (typeaheadOnSelect)="onSelectReceiver($event)"
+            [typeaheadMinLength]="0"
+            class="form-control col-8"
+          />
+          <label *ngIf="noResultTA">Dont have Receiver</label>
+        </div>
+        <div style="text-align: center;">
+          <button class="btn btn-success m-2 w-25" (click)="addTransaction()">
+            PAY
+          </button>
+          <label *ngIf="notFunds">Insufficient funds!</label>
+        </div>
+      </div>
+      <div class="transaction">
+        <h5 style="text-align: center;">Pending Transactions</h5>
+        <table style="width: 100%; text-align: center;">
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Amount</th>
+          </tr>
+          <tr *ngFor="let tran of blockChain.pendingTransactions">
+            <td>{{ tran.sender }}</td>
+            <td>{{ tran.recipient }}</td>
+            <td>{{ tran.amount }}</td>
+          </tr>
+        </table>
+        <h4>Funds: {{funds}}</h4>
+      </div>
+    </div>
+  </div>
+</div>

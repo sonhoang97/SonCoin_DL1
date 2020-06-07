@@ -5,7 +5,7 @@ const Transaction = require("./transactionModel");
 
 class Block {
   constructor(timestamp, transactions, previousHash = "") {
-    this.timestamp = timestamp;
+    this.timeStamp = timestamp;
     this.transactions = transactions;
     this.previousHash = previousHash;
     this.hash = this.calculateHash();
@@ -14,7 +14,7 @@ class Block {
 
   calculateHash() {
     return SHA256(
-      this.timestamp +
+      this.timeStamp +
         JSON.stringify(this.transactions) +
         this.previousHash +
         this.nonce
