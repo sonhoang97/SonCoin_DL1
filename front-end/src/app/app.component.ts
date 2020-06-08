@@ -56,10 +56,23 @@ export class AppComponent implements OnInit {
   }
   selectUserButton(user) {
     this.selectUser = user;
+    this.receiveTA = '';
+    this.amountTrans = null;
     this.configService
       .getBalance(this.blockChain.blockChain, this.selectUser)
       .subscribe((res: any) => {
         this.balanceUser = res;
+        this.funds = 0;
+        this.blockChain.pendingTransactions.forEach((element) => {
+          if (element.sender == this.selectUser) {
+            this.funds += element.amount;
+          } else if (element.recipient == this.selectUser) {
+            this.funds -= element.amount;
+            if (this.funds <= 0) {
+              this.funds = 0;
+            }
+          }
+        });
       });
   }
 
@@ -108,8 +121,16 @@ export class AppComponent implements OnInit {
       )
       .subscribe((res: any) => {
         this.blockChain = res;
+        this.funds = 0;
         this.blockChain.pendingTransactions.forEach((element) => {
-          this.funds += element.amount;
+          if (element.sender == this.selectUser) {
+            this.funds += element.amount;
+          } else if (element.recipient == this.selectUser) {
+            this.funds -= element.amount;
+            if (this.funds <= 0) {
+              this.funds = 0;
+            }
+          }
         });
       });
   }

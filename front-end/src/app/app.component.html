@@ -1,4 +1,7 @@
 <div class="container-fluild">
+  <div class="w-100 son" >
+    SonCoin - 1512462 - Nguyen Hoang Son
+  </div>
   <div class="row m-auto">
     <div class="col-2 m-5">
       <label>Create user: </label>
@@ -16,8 +19,9 @@
           Create
         </button>
       </div>
-      <div *ngFor="let user of lsUser">
-        <button class="btn btn-success" (click)="selectUserButton(user)">
+      <hr>
+      <div *ngFor="let user of lsUser" style="display: inline-block;">
+        <button class="btn btn-success m-2" style="border-radius: 50%;" (click)="selectUserButton(user)">
           {{ user }}
         </button>
       </div>
@@ -160,8 +164,8 @@
             <th>Amount</th>
           </tr>
           <tr *ngFor="let tran of blockChain.pendingTransactions">
-            <td>{{ tran.sender }}</td>
-            <td>{{ tran.recipient }}</td>
+            <td [class.insert]="tran.sender === selectUser">{{ tran.sender }}</td>
+            <td [class.insert]="tran.recipient === selectUser">{{ tran.recipient }}</td>
             <td>{{ tran.amount }}</td>
           </tr>
         </table>
